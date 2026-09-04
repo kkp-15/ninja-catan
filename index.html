@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>カタンの点数計算とサイコロ｜勝利点の数え方・出目の記録</title>
+<meta name="description" content="カタンの勝利点を自動で計算し、サイコロを振る・実際の出目を記録するツール。開拓地1点、都市2点、最長交易路と最大騎士力が各2点、10点で勝ち。結果は画像で保存できます。7が出たときの処理や建設コストもまとめています。">
+<link rel="canonical" href="https://catan.kkpwebninja.com/">
+<link rel="alternate" hreflang="ja" href="https://catan.kkpwebninja.com/">
+<link rel="alternate" hreflang="x-default" href="https://catan.kkpwebninja.com/">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="theme-color" content="#e8843a">
+<!-- WEBNINJA_UNIFIED_FAVICON -->
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="カタンの点数計算とサイコロ｜勝利点の数え方・出目の記録">
+<meta property="og:description" content="勝利点を自動計算し、サイコロを振る・出目を記録できる1ページ。結果は画像で保存できます。">
+<meta property="og:url" content="https://catan.kkpwebninja.com/">
+<meta property="og:site_name" content="カタンの点数計算とサイコロ">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://catan.kkpwebninja.com/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://catan.kkpwebninja.com/ogp.png">
+
+<!-- GA4（砦共通） -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2LM85GJN0L"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-2LM85GJN0L');
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1298304917726270" crossorigin="anonymous"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebApplication",
+      "@id":"https://catan.kkpwebninja.com/#app",
+      "name":"カタンの点数計算とサイコロ",
+      "url":"https://catan.kkpwebninja.com/",
+      "applicationCategory":"GameApplication",
+      "operatingSystem":"Web",
+      "browserRequirements":"JavaScriptが有効なブラウザ",
+      "inLanguage":"ja",
+      "softwareVersion":"1.1.0",
+      "datePublished":"2026-09-04",
+      "description":"ボードゲーム『カタン』の勝利点を自動計算し、サイコロを振る・実際の出目を記録できるツール。結果は画像で保存できます。",
+      "featureList":["勝利点の自動計算","最大騎士力の自動判定","サイコロを振る","出目の記録と集計","偏りをならす振り方","初期配置の生成","結果の画像保存"],
+      "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},
+      "author":{"@type":"Organization","name":"web忍者の砦"},
+      "publisher":{"@type":"Organization","name":"web忍者の砦","url":"https://kkpwebninja.com/"},
+      "isAccessibleForFree":true
+    },
+    {
+      "@type":"HowTo",
+      "@id":"https://catan.kkpwebninja.com/#howto",
+      "name":"カタンの点数とサイコロを記録する手順",
+      "totalTime":"PT1M",
+      "step":[
+        {"@type":"HowToStep","position":1,"name":"人数と名前を決める","text":"得点欄でプレイヤーを追加し、名前と色を設定します。最大6人まで対応しています。"},
+        {"@type":"HowToStep","position":2,"name":"サイコロを振る、または出目を記録する","text":"画面で振ると出目が自動で記録されます。実物のサイコロを使う場合は、出た数字をタップして記録します。"},
+        {"@type":"HowToStep","position":3,"name":"建てたものを数える","text":"開拓地や都市を建てたら数を増やします。勝利点は自動で計算され、10点に届いた人に印がつきます。"}
+      ]
+    },
+    {
+      "@type":"FAQPage",
+      "@id":"https://catan.kkpwebninja.com/#faq",
+      "mainEntity":[
+        {"@type":"Question","name":"カタンは何点で勝ちですか",
+         "acceptedAnswer":{"@type":"Answer","text":"勝利点10点に到達した人の勝ちです。自分の手番のうちに10点に届いた時点で、その場で勝利を宣言します。手番外に条件を満たした場合は、次の自分の手番まで勝利になりません。"}},
+        {"@type":"Question","name":"カタンの勝利点の数え方は",
+         "acceptedAnswer":{"@type":"Answer","text":"開拓地が1点、都市が2点、勝利点の発展カードが1点です。加えて、最長交易路を持っている人に2点、最大騎士力を持っている人に2点が入ります。勝利点カードは伏せたまま持てるため、見えている点数より実際の点数が高いことがあります。"}},
+        {"@type":"Question","name":"最長交易路の条件は",
+         "acceptedAnswer":{"@type":"Answer","text":"つながった街道が5本以上あり、その長さが単独で最長のときに獲得します。枝分かれしている場合は、途切れずにたどれる一番長い一本を数えます。相手の開拓地や都市が道の途中に建つと、そこで道は分断されます。あとから他の人がより長い道を作れば、権利はその人に移ります。同じ長さに並んだ場合は、いま持っている人が保持します。"}},
+        {"@type":"Question","name":"最大騎士力の条件は",
+         "acceptedAnswer":{"@type":"Answer","text":"使用済みの騎士カードが3枚以上あり、その枚数が単独で最多のときに獲得します。買っただけでは数えず、場に出して盗賊を動かした騎士のみを数えます。同数に並んだ場合は、先に獲得した人が持ち続けます。"}},
+        {"@type":"Question","name":"サイコロで7が出たらどうしますか",
+         "acceptedAnswer":{"@type":"Answer","text":"まず、手札が8枚以上の人が全員、手札の半分を捨てます。奇数枚のときは切り捨てで、捨てる資源は自分で選びます。次に振った人が盗賊を好きな土地に動かし、その土地に接する開拓地や都市を持つ人が1人いれば、その人から資源を1枚引きます。盗賊が乗っている土地は、その数字が出ても資源を産みません。"}},
+        {"@type":"Question","name":"発展カードは全部で何枚ありますか",
+         "acceptedAnswer":{"@type":"Answer","text":"基本セットは25枚です。内訳は騎士14枚、勝利点5枚、街道建設2枚、収穫2枚、独占2枚です。"}},
+        {"@type":"Question","name":"発展カードは買ったターンに使えますか",
+         "acceptedAnswer":{"@type":"Answer","text":"買った手番には使えません。次の自分の手番から使えます。ただし勝利点カードだけは例外で、それによって10点に届くなら、買った手番にそのまま公開して勝つことができます。"}},
+        {"@type":"Question","name":"サイコロの出目が偏るのはなぜですか",
+         "acceptedAnswer":{"@type":"Answer","text":"2個のサイコロの出方は36通りあり、その組み合わせの数が数字ごとに違うためです。7は6通りで最も出やすく、6と8が各5通り、2と12は各1通りしかありません。ただし短いゲーム1回で振る回数はせいぜい数十回なので、確率どおりに均されるほどの回数にはならず、偏って感じられるのが普通です。"}}
+      ]
+    }
+  ]
+}
+</script>
+
+<style>
+:root{
+  --edge:#dfcbb0;
+  --cream:#fdf6ec; --paper:#fffdf8; --orange:#e8843a; --orange-deep:#c76a26;
+  --ink:#3b2c22; --ink-soft:#7a6656; --line:#e6d9c6; --red:#c0392b;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--cream);color:var(--ink);
+  font-family:"Noto Serif JP",serif;font-size:16px;line-height:1.75;
+  -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:620px;margin:0 auto;padding:20px 14px 56px}
+
+h1{font-size:1.05rem;font-weight:600;letter-spacing:.05em;margin:0 0 14px;text-align:center}
+.lede{margin:0 0 6px;text-align:center;font-size:.78rem;color:var(--ink-soft);letter-spacing:.03em}
+.ver{text-align:center;font-size:.66rem;color:var(--ink-soft);letter-spacing:.1em;margin:0 0 18px}
+h2{
+  font-size:.8rem;font-weight:600;letter-spacing:.1em;color:var(--ink-soft);
+  margin:24px 0 10px;padding-bottom:5px;border-bottom:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:baseline;
+}
+h2 span{font-size:.72rem;letter-spacing:.04em;font-weight:400}
+h3{font-size:.95rem;font-weight:600;margin:24px 0 6px}
+
+.modes{display:flex;gap:7px;margin-bottom:14px}
+.modes button{
+  flex:1;appearance:none;font-family:inherit;cursor:pointer;background:#fff;
+  border:1px solid var(--line);border-radius:9px;padding:9px 4px;font-size:.83rem;color:var(--ink-soft);
+}
+.modes button.on{background:#fdf1e6;border-color:var(--orange);color:var(--ink)}
+.modes button:focus-visible{outline:2px solid var(--orange);outline-offset:1px}
+
+.roller{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center}
+.rollrow{display:flex;align-items:center;justify-content:center;gap:18px}
+.result{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:3.3rem;line-height:1;min-width:1.4em}
+.result.seven{color:var(--red)}
+.result-note{font-size:.76rem;color:var(--ink-soft);min-height:1.3em;letter-spacing:.03em}
+.dice{display:flex;justify-content:center;gap:9px}
+.die{
+  width:40px;height:40px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:6px;
+  display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);
+}
+.die i{width:6px;height:6px;border-radius:50%;background:var(--ink);align-self:center;justify-self:center}
+.die.b i{background:var(--red)}
+@keyframes tumble{0%{transform:translateY(0) rotate(0)}35%{transform:translateY(-8px) rotate(-6deg)}70%{transform:translateY(2px) rotate(4deg)}100%{transform:translateY(0) rotate(0)}}
+.die.go{animation:tumble .32s ease}
+@media (prefers-reduced-motion:reduce){.die.go{animation:none}}
+.btn{
+  display:block;width:100%;appearance:none;font-family:inherit;cursor:pointer;
+  background:var(--orange);color:#fff;border:1px solid var(--orange-deep);border-radius:9px;
+  padding:13px 20px;font-size:1rem;letter-spacing:.14em;margin-top:11px;
+}
+.btn:active{transform:translateY(1px)}
+.btn:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.even{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px;font-size:.72rem;color:var(--ink-soft);cursor:pointer}
+.even input{width:16px;height:16px;accent-color:var(--orange)}
+
+/* 全員の点数（サイコロの下） */
+.strip{
+  display:flex;gap:7px;margin-top:12px;overflow-x:auto;padding-bottom:4px;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+.strip::-webkit-scrollbar{display:none}
+.sp{
+  position:relative;
+  flex:1 0 auto;min-width:78px;appearance:none;font-family:inherit;cursor:pointer;
+  background:var(--paper);border:1px solid var(--line);border-radius:9px;
+  padding:8px 8px 11px;text-align:center;color:var(--ink);
+  box-shadow:0 1px 0 rgba(59,44,34,.07);
+}
+.sp .car{
+  position:absolute;right:6px;bottom:3px;font-size:.58rem;color:var(--ink-soft);line-height:1;
+}
+.sp.sel .car{color:var(--orange-deep)}
+.sp:active{background:#f7ecdc}
+.sp:focus-visible{outline:2px solid var(--orange);outline-offset:1px}
+.sp.top{border-color:var(--orange);background:#fdf4ea}
+.sp .who{display:flex;align-items:center;justify-content:center;gap:5px;margin-bottom:2px}
+.sp .dot{width:9px;height:9px;border-radius:50%;border:1px solid rgba(59,44,34,.28);flex:0 0 auto}
+.sp .nm{font-size:.7rem;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:70px}
+.sp .pt{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:1.55rem;line-height:1.1;display:block}
+.sp .mk{display:block;font-size:.6rem;color:var(--ink-soft);letter-spacing:.14em;min-height:1em;line-height:1}
+.sp.sel{border-color:var(--orange);background:#fdf1e6}
+.sp.addp{
+  min-width:46px;flex:0 0 auto;color:var(--ink-soft);font-size:1.2rem;
+  display:flex;align-items:center;justify-content:center;
+}
+.sheet{max-height:0;overflow:hidden;transition:max-height .2s ease}
+.sheet.open{max-height:620px;margin-top:8px}
+@media (prefers-reduced-motion:reduce){.sheet{transition:none}}
+.sheet-in{background:var(--paper);border:1px solid var(--orange);border-radius:10px;padding:11px 13px}
+.sheet-in .head{display:flex;align-items:center;gap:9px}
+.sheet-in .close{
+  appearance:none;background:none;border:0;color:var(--ink-soft);font-family:inherit;
+  font-size:1rem;cursor:pointer;padding:0 2px;line-height:1;
+}
+.army-mark{font-size:.72rem;color:var(--orange-deep);align-self:center}
+.strip-note{font-size:.7rem;color:var(--ink-soft);margin:2px 0 0;text-align:right}
+
+.pad{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.key{
+  position:relative;appearance:none;font-family:inherit;overflow:hidden;
+  background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:9px 0 6px;color:var(--ink);cursor:pointer;
+}
+.key:active{background:#f7ecdc}
+.key:focus-visible{outline:2px solid var(--orange);outline-offset:1px}
+.key .bg{position:absolute;left:0;right:0;bottom:0;background:#f6e2cc;height:0;transition:height .2s ease}
+.key .v{position:relative;font-family:"Cormorant Garamond",serif;font-size:1.3rem;line-height:1;display:block}
+.key .c{position:relative;font-size:.68rem;color:var(--ink-soft);display:block;margin-top:2px}
+.key.hot .v{color:var(--red)}
+.key.seven{background:#fbf1ec}
+.key.seven .bg{background:#f0d5c8}
+.key.last{border-color:var(--orange)}
+
+.meta{display:flex;gap:12px;flex-wrap:wrap;align-items:center;font-size:.76rem;color:var(--ink-soft);margin-top:10px}
+.meta .grow{flex:1}
+.quiet.mini{padding:5px 10px;font-size:.72rem}
+.meta b{font-family:"Cormorant Garamond",serif;font-size:1.05rem;color:var(--ink);font-weight:600}
+.recent{font-size:.75rem;color:var(--ink-soft);margin:7px 0 0;min-height:1.3em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.quiet{
+  appearance:none;font-family:inherit;cursor:pointer;background:none;color:var(--ink-soft);
+  border:1px solid var(--line);border-radius:8px;padding:7px 13px;font-size:.78rem;
+}
+.quiet:active{background:#f4ebdd}
+.quiet.accent{border-color:var(--orange);color:var(--ink);background:#fdf1e6}
+
+.player{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin-bottom:9px}
+.player.win{border-color:var(--orange);background:#fdf4ea}
+.head{display:flex;align-items:center;gap:9px}
+.chip{width:19px;height:19px;border-radius:50%;border:1px solid rgba(59,44,34,.28);flex:0 0 auto;padding:0;cursor:pointer}
+.name{flex:1;border:0;background:none;font-family:inherit;font-size:.98rem;color:var(--ink);padding:2px 0;border-bottom:1px dashed transparent;min-width:0}
+.name:focus{outline:none;border-bottom-color:var(--line)}
+.vp{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:1.9rem;line-height:1}
+.vp small{font-size:.58rem;font-family:"Noto Serif JP",serif;color:var(--ink-soft);margin-left:3px}
+.win .vp{color:var(--orange-deep)}
+.rows{margin-top:9px;display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.r{display:flex;align-items:center;gap:6px;padding:4px 6px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.r .lb{flex:1;font-size:.74rem;color:var(--ink-soft);order:3;line-height:1.3}
+.r .lb b{font-weight:400;color:var(--ink)}
+.r .num{font-family:"Cormorant Garamond",serif;font-size:1.2rem;min-width:1.1em;text-align:center}
+.step{
+  appearance:none;border:1px solid var(--line);background:var(--cream);color:var(--ink);
+  width:29px;height:29px;border-radius:8px;font-size:1.05rem;line-height:1;cursor:pointer;font-family:inherit;flex:0 0 auto;
+}
+.step:active{background:#f2e5d3}
+.step:focus-visible{outline:2px solid var(--orange);outline-offset:1px}
+.toggle{
+  appearance:none;font-family:inherit;cursor:pointer;background:#fff;border:1px solid var(--line);
+  border-radius:8px;padding:5px 10px;font-size:.76rem;color:var(--ink-soft);
+}
+.toggle.on{background:#fdf1e6;border-color:var(--orange);color:var(--ink)}
+.toggle[disabled]{opacity:1;cursor:default}
+.badge-row{display:flex;gap:7px;margin-top:9px}
+.badge-row .toggle{flex:1;text-align:center}
+
+/* 初期配置 */
+.mapbox{
+  border:1px solid var(--line);border-radius:10px;background:var(--paper);
+  padding:0 12px;margin-bottom:14px;
+}
+.mapbox summary{font-size:.85rem;color:var(--ink-soft);padding:11px 22px 11px 2px}
+.mapbox[open] summary{color:var(--ink);border-bottom:1px solid var(--line);margin-bottom:12px}
+.mapbox summary::after{right:2px}
+.mapbox .board-box{border:0;padding:0;background:none}
+.mapbox .note{padding-bottom:12px}
+.board-box{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px}
+#board svg{display:block;width:100%;height:auto}
+.board-box .btn{margin-top:8px}
+
+/* 使い方 */
+.steps{counter-reset:s;margin:0;padding:0;list-style:none}
+.steps li{
+  position:relative;padding:10px 0 10px 42px;border-bottom:1px solid var(--line);font-size:.86rem;
+}
+.steps li:last-child{border-bottom:0}
+.steps li::before{
+  counter-increment:s;content:counter(s);
+  position:absolute;left:0;top:12px;width:26px;height:26px;border-radius:50%;
+  border:1px solid var(--orange);color:var(--orange-deep);
+  font-family:"Cormorant Garamond",serif;font-size:.95rem;text-align:center;line-height:25px;
+}
+.steps b{display:block;font-weight:600;font-size:.9rem}
+.steps span{color:var(--ink-soft);font-size:.82rem;line-height:1.8}
+
+/* 解説 */
+.doc p{font-size:.88rem;line-height:1.95;margin:0 0 12px}
+table{width:100%;border-collapse:collapse;font-size:.85rem;margin:6px 0 4px}
+th,td{text-align:left;padding:8px 4px;border-bottom:1px solid var(--line)}
+th{font-weight:600;font-size:.76rem;color:var(--ink-soft);letter-spacing:.05em}
+td.r2{text-align:right}
+.hot-n{color:var(--red)}
+details{border-bottom:1px solid var(--line);padding:2px 0}
+summary{cursor:pointer;padding:11px 2px;font-size:.9rem;list-style:none;position:relative;padding-right:22px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"＋";position:absolute;right:2px;color:var(--ink-soft);font-size:.85rem}
+details[open] summary::after{content:"−"}
+details p{font-size:.85rem;color:var(--ink-soft);margin:0 0 12px;line-height:1.9}
+.share{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.share a{
+  flex:1;min-width:80px;text-align:center;text-decoration:none;color:var(--ink-soft);
+  border:1px solid var(--line);border-radius:8px;padding:8px 6px;font-size:.78rem;background:#fff;
+}
+.log-list{font-size:.82rem;color:var(--ink-soft);line-height:1.9}
+.log-list b{color:var(--ink);font-weight:600;font-size:.85rem}
+.note{font-size:.76rem;color:var(--ink-soft);line-height:1.75;margin-top:14px}
+footer{margin-top:38px;padding-top:14px;border-top:1px solid var(--line);text-align:center;font-size:.7rem;color:var(--ink-soft);letter-spacing:.06em;line-height:2}
+@media (max-width:360px){ .pad{grid-template-columns:repeat(4,1fr)} .result{font-size:2.9rem} }
+
+/* ===== 押せるものの共通ルール ===== */
+/* 浮いている＝押せる。枠だけのもの（容器・表示）は浮かせない */
+button, summary, a[data-net]{ -webkit-tap-highlight-color:rgba(232,132,58,.18) }
+
+.btn, .quiet, .key, .sp, .step, .toggle, .chip, .share a{
+  box-shadow:0 2px 0 var(--edge);
+  transition:transform .06s ease, box-shadow .06s ease;
+}
+.btn{ box-shadow:0 3px 0 var(--orange-deep) }
+.btn:active{ transform:translateY(3px); box-shadow:0 0 0 var(--orange-deep) }
+.quiet:active, .key:active, .sp:active, .step:active,
+.toggle:active, .chip:active, .share a:active{
+  transform:translateY(2px); box-shadow:0 0 0 var(--edge);
+}
+@media (prefers-reduced-motion:reduce){
+  .btn, .quiet, .key, .sp, .step, .toggle, .chip, .share a{ transition:none }
+}
+
+/* モード切替は溝の中に押しボタンが入っている形に */
+.modes{ background:#f3e7d6; border-radius:11px; padding:4px; gap:4px }
+.modes button{ background:transparent; border-color:transparent; box-shadow:none }
+.modes button.on{ background:#fff; border-color:var(--orange); box-shadow:0 2px 0 var(--edge) }
+
+/* 開閉する行も押せることを示す */
+summary{ border-radius:8px }
+summary:active{ background:#f7ecdc }
+
+/* 数字パッドは「＋で1回ぶん増える」ことを示す */
+.key::before{
+  content:"";position:absolute;inset:0;border-radius:9px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.7);pointer-events:none;
+}
+
+/* ===== 広告・物販 =====
+   広告は本文と混ざらないよう、上下に区切り線を入れてラベルを必ず出す。
+   高さは先に予約する（読み込みで本文が飛ばないようにするため）。 */
+.ad-slot{margin:26px 0;padding:12px 0;text-align:center;
+  border-top:1px dashed var(--line);border-bottom:1px dashed var(--line)}
+.ad-label{font-size:10.5px;letter-spacing:.14em;color:var(--ink-soft);margin-bottom:6px}
+.ad-slot ins.adsbygoogle{display:block;width:320px;height:100px;margin:0 auto}
+@media(min-width:760px){ .ad-slot ins.adsbygoogle{width:728px;height:90px} }
+
+.shop{margin:26px 0;padding:14px 16px;background:var(--paper);
+  border:1px solid var(--line);border-radius:10px}
+.shop h3{font-size:.95rem;font-weight:600;margin:0 0 2px;letter-spacing:.03em}
+.shop .pr{display:block;font-size:10.5px;color:var(--ink-soft);letter-spacing:.06em;margin-bottom:10px}
+.shop .item{padding:10px 0;border-top:1px solid var(--line)}
+.shop .item p{margin:0 0 7px;font-size:.86rem;line-height:1.7;color:var(--ink-soft)}
+.shop .item b{color:var(--ink);font-weight:600}
+.shop .buy{display:inline-block;margin:0 7px 5px 0;padding:5px 13px;font-size:.8rem;
+  border:1px solid var(--orange);border-radius:999px;color:var(--orange-deep);
+  text-decoration:none;background:#fff}
+.shop .buy.alt{border-color:var(--edge);color:var(--ink-soft)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>カタンの点数計算とサイコロ</h1>
+
+<details class="mapbox" id="mapbox">
+  <summary>初期配置をつくる</summary>
+  <div class="board-box">
+    <div id="board"></div>
+    <button class="btn" id="genBoard">並べ直す</button>
+  </div>
+  <p class="note" style="margin-top:8px">
+    6と8が隣り合わない、2と12が隣り合わない、同じ資源が固まりすぎないところまで見ています。実物のタイルを並べるときの下敷きとして使ってください。港は入っていません。
+  </p>
+</details>
+
+<div class="modes" id="modes">
+  <button data-mode="screen" class="on">画面で振る</button>
+  <button data-mode="real">実物のサイコロ</button>
+</div>
+
+<div class="roller" id="roller">
+  <div class="rollrow">
+    <div class="dice">
+      <div class="die" id="dieA"></div>
+      <div class="die b" id="dieB"></div>
+    </div>
+    <div class="result" id="result">—</div>
+  </div>
+  <div class="result-note" id="resultNote">ボタンを押して振ります</div>
+  <button class="btn" id="roll">振る</button>
+  <label class="even"><input type="checkbox" id="evenMode">偏りをならす（36通りを1周させる）</label>
+</div>
+
+<div class="strip" id="strip" aria-label="全員の点数"></div>
+<p class="strip-note" id="stripNote">名前を押すと点をつけられます</p>
+<div class="sheet" id="sheet"></div>
+
+<h2>出目の記録 <span id="padHint">数字を押すと直せます</span></h2>
+<div class="pad" id="pad"></div>
+<div class="meta">
+  <span>回数 <b id="mTotal">0</b></span>
+  <span>7 <b id="mSeven">0</b></span>
+  <span>未出 <b id="mMissing">—</b></span>
+  <span class="grow"></span>
+  <button class="quiet mini" id="undo">1つ戻す</button>
+  <button class="quiet mini" id="resetDice">消す</button>
+</div>
+<p class="recent" id="recent"></p>
+
+<h2>この対戦</h2>
+<div class="tools">
+  <button class="quiet" id="hide">勝利点カードを伏せる</button>
+  <button class="quiet" id="resetScore">得点をリセット</button>
+  <button class="quiet accent" id="saveImg">画像で保存</button>
+</div>
+<p class="note" id="saveNote">終わったあとの点数と出目を1枚の画像にまとめます。</p>
+
+<div class="ad-slot">
+  <div class="ad-label">広告</div>
+  <ins class="adsbygoogle" style="display:block"
+       data-ad-client="ca-pub-1298304917726270"
+       data-ad-format="horizontal"
+       data-full-width-responsive="false"></ins>
+</div>
+
+<h2>使い方</h2>
+<ol class="steps">
+  <li><b>人数と名前を決める</b><span>プレイヤーを追加して、名前と色を設定します。色の丸を押すと色が変わります。6人まで対応しています。</span></li>
+  <li><b>サイコロを振る、または出目を記録する</b><span>画面で振ると出目が自動で記録されます。実物のサイコロを使う卓では、出た数字をタップしてください。</span></li>
+  <li><b>建てたものを数える</b><span>開拓地や都市を建てたら数を増やします。点数は自動で計算され、10点に届くと印がつきます。</span></li>
+</ol>
+
+<article class="doc">
+
+<h2>勝利点の数え方</h2>
+<p>カタンは勝利点10点に届いた人の勝ちです。到達を宣言できるのは自分の手番のうちだけで、人の手番中に条件を満たしても、そのときは勝ちになりません。</p>
+<table>
+  <tr><th>もの</th><th class="r2">点数</th></tr>
+  <tr><td>開拓地</td><td class="r2">1点</td></tr>
+  <tr><td>都市</td><td class="r2">2点</td></tr>
+  <tr><td>勝利点の発展カード</td><td class="r2">1点</td></tr>
+  <tr><td>最長交易路</td><td class="r2">2点</td></tr>
+  <tr><td>最大騎士力</td><td class="r2">2点</td></tr>
+</table>
+<p>都市は開拓地を置き換えて建てるので、都市になった時点で点は1点から2点に変わります。勝利点カードは伏せたまま持てるため、見えている点数より実際は高いことがあります。上のツールには「勝利点カードを伏せる」があり、卓の全員から見える点数だけを表示できます。</p>
+
+<h3>建てるのに必要な資源</h3>
+<table>
+  <tr><th>建てるもの</th><th class="r2">コスト</th></tr>
+  <tr><td>街道</td><td class="r2">木1・土1</td></tr>
+  <tr><td>開拓地</td><td class="r2">木1・土1・麦1・羊1</td></tr>
+  <tr><td>都市</td><td class="r2">麦2・鉄3</td></tr>
+  <tr><td>発展カード</td><td class="r2">麦1・羊1・鉄1</td></tr>
+</table>
+<p>1人が置けるコマは街道15本、開拓地5個、都市4個までです。開拓地を5個使い切ったら、都市に建て替えて開拓地を手元に戻さないと、それ以上は広げられません。</p>
+
+<h2>数字の出やすさ</h2>
+<p>サイコロ2個の出方は36通りあります。数字ごとの組み合わせの数はこうなります。</p>
+<table>
+  <tr><th>数字</th><th>組み合わせ</th><th class="r2">36回あたり</th></tr>
+  <tr><td>2</td><td>1通り</td><td class="r2">1回</td></tr>
+  <tr><td>3</td><td>2通り</td><td class="r2">2回</td></tr>
+  <tr><td>4</td><td>3通り</td><td class="r2">3回</td></tr>
+  <tr><td>5</td><td>4通り</td><td class="r2">4回</td></tr>
+  <tr><td class="hot-n">6</td><td>5通り</td><td class="r2">5回</td></tr>
+  <tr><td>7</td><td>6通り</td><td class="r2">6回</td></tr>
+  <tr><td class="hot-n">8</td><td>5通り</td><td class="r2">5回</td></tr>
+  <tr><td>9</td><td>4通り</td><td class="r2">4回</td></tr>
+  <tr><td>10</td><td>3通り</td><td class="r2">3回</td></tr>
+  <tr><td>11</td><td>2通り</td><td class="r2">2回</td></tr>
+  <tr><td>12</td><td>1通り</td><td class="r2">1回</td></tr>
+</table>
+<p>初期配置では、接する3つの土地の数字の強さを足して比べます。6と8が赤く印刷されているのはこのためです。ただし1回のゲームで振る回数は数十回ほどなので、確率どおりには均されません。上のツールで記録していくと、その日の卓がどう転がっているかが見えます。</p>
+
+<h2>よくある確認</h2>
+
+<details>
+  <summary>7が出たら何をしますか</summary>
+  <p>まず、手札が8枚以上の人が全員、手札の半分を捨てます。奇数枚のときは切り捨てで、どれを捨てるかは自分で選びます。次に振った人が盗賊を好きな土地へ動かし、その土地に接する開拓地や都市を持つ人が1人いれば、そこから資源を1枚引きます。盗賊が乗っている土地は、その数字が出ても資源を産みません。</p>
+</details>
+
+<details>
+  <summary>最長交易路はどう判定しますか</summary>
+  <p>つながった街道が5本以上あり、その長さが単独で最長のときに獲得します。枝分かれしている場合は、途切れずにたどれる一番長い一本だけを数えます。道の途中に相手の開拓地や都市が建つと、そこで分断されます。あとから誰かがより長い道を作れば権利は移り、同じ長さに並んだときは、いま持っている人が保持します。盤面を見ないと判定できないので、上のツールでは手で切り替える形にしています。</p>
+</details>
+
+<details>
+  <summary>最大騎士力はどう判定しますか</summary>
+  <p>使った騎士カードが3枚以上あり、その枚数が単独で最多のときに獲得します。買って手札にあるだけでは数えず、場に出して盗賊を動かした騎士のみを数えます。同数に並んだときは先に取った人が持ち続けます。上のツールでは騎士の枚数を入れると自動で判定します。</p>
+</details>
+
+<details>
+  <summary>発展カードは何枚あり、何が入っていますか</summary>
+  <p>基本セットは25枚です。騎士14枚、勝利点5枚、街道建設2枚、収穫2枚、独占2枚という内訳になります。騎士が半分以上を占めるので、終盤に「まだ騎士が残っているか」を数えておくと、最大騎士力の行方が読めます。</p>
+</details>
+
+<details>
+  <summary>買ったターンに発展カードは使えますか</summary>
+  <p>使えません。次の自分の手番からです。ただし勝利点カードだけは例外で、それで10点に届くなら、買った手番にそのまま公開して勝つことができます。</p>
+</details>
+
+<details>
+  <summary>資源の交換レートは</summary>
+  <p>銀行との交換は同じ資源4枚で好きな1枚です。一般の港に接した開拓地か都市があれば3枚で1枚、専門の港なら対応する資源2枚で1枚になります。プレイヤー同士の交換にはレートの決まりがなく、手番の人が関わる取引だけが成立します。</p>
+</details>
+
+<details>
+  <summary>サイコロが偏るのは気のせいですか</summary>
+  <p>気のせいではなく、回数が足りないだけです。1回のゲームで振るのはせいぜい数十回で、確率が均されるほどの回数になりません。上のツールの「偏りをならす」を使うと、36通りを1枚ずつ引き切る方式になり、置いた土地が最後まで働かないという事故が減ります。実物のサイコロではできない振り方です。</p>
+</details>
+
+</article>
+
+<div class="shop">
+  <h3>カタンを手元に置くなら</h3>
+  <span class="pr">PR・アフィリエイト広告を含みます</span>
+
+  <div class="item">
+    <p><b>カタン スタンダード版</b>　3〜4人用の基本セット。ここから始められます。</p>
+    <a class="buy" href="https://www.amazon.co.jp/s?k=%E3%82%AB%E3%82%BF%E3%83%B3%20%E3%82%B9%E3%82%BF%E3%83%B3%E3%83%80%E3%83%BC%E3%83%89%E7%89%88&tag=kkp15-22" target="_blank" rel="nofollow sponsored noopener">Amazonで見る</a>
+    <a class="buy alt" href="https://hb.afl.rakuten.co.jp/hgc/11008fdf.72a391c0.11008fe0.307a7b09/?pc=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F%E3%82%AB%E3%82%BF%E3%83%B3%20%E3%82%B9%E3%82%BF%E3%83%B3%E3%83%80%E3%83%BC%E3%83%89%E7%89%88%2F&m=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F%E3%82%AB%E3%82%BF%E3%83%B3%20%E3%82%B9%E3%82%BF%E3%83%B3%E3%83%80%E3%83%BC%E3%83%89%E7%89%88%2F" target="_blank" rel="nofollow sponsored noopener">楽天で見る</a>
+  </div>
+
+  <div class="item">
+    <p><b>5-6人用拡張版</b>　人数が増えたとき用。スタンダード版と合わせて使います。</p>
+    <a class="buy" href="https://www.amazon.co.jp/s?k=%E3%82%AB%E3%82%BF%E3%83%B3%205-6%E4%BA%BA%E7%94%A8%E6%8B%A1%E5%BC%B5%E7%89%88&tag=kkp15-22" target="_blank" rel="nofollow sponsored noopener">Amazonで見る</a>
+    <a class="buy alt" href="https://hb.afl.rakuten.co.jp/hgc/11008fdf.72a391c0.11008fe0.307a7b09/?pc=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F%E3%82%AB%E3%82%BF%E3%83%B3%205-6%E4%BA%BA%E7%94%A8%E6%8B%A1%E5%BC%B5%E7%89%88%2F&m=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F%E3%82%AB%E3%82%BF%E3%83%B3%205-6%E4%BA%BA%E7%94%A8%E6%8B%A1%E5%BC%B5%E7%89%88%2F" target="_blank" rel="nofollow sponsored noopener">楽天で見る</a>
+  </div>
+
+  <div class="item">
+    <p><b>都市と騎士版・航海者版</b>　基本に飽きたころの拡張。遊び方が変わります。</p>
+    <a class="buy" href="https://www.amazon.co.jp/s?k=%E3%82%AB%E3%82%BF%E3%83%B3%20%E6%8B%A1%E5%BC%B5%E7%89%88&tag=kkp15-22" target="_blank" rel="nofollow sponsored noopener">拡張版を探す</a>
+    <a class="buy alt" href="https://hb.afl.rakuten.co.jp/hgc/11008fdf.72a391c0.11008fe0.307a7b09/?pc=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F%E3%82%AB%E3%82%BF%E3%83%B3%20%E6%8B%A1%E5%BC%B5%2F&m=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F%E3%82%AB%E3%82%BF%E3%83%B3%20%E6%8B%A1%E5%BC%B5%2F" target="_blank" rel="nofollow sponsored noopener">楽天で探す</a>
+  </div>
+</div>
+
+<h2>このツールについて</h2>
+<p class="note" style="margin-top:0">
+点数は入力した数から計算しているだけなので、入れ忘れがあればそのぶんずれます。最終的な勝敗は盤面で確かめてください。得点も出目も、ページを閉じるかリロードすると消えます。1ゲームぶんのメモとして使う想定です。
+</p>
+
+<h2>更新履歴</h2>
+<p class="log-list"><b>v1.1.0（2026年9月4日）</b><br>初期配置を生成する機能を追加。6と8、2と12が隣り合わないように配置します。<br><br><b>v1.0.0（2026年9月4日）</b><br>初期リリース。勝利点の自動計算、最大騎士力の自動判定、サイコロを振る機能、出目の記録、偏りをならす振り方、結果の画像保存。</p>
+
+<div class="ad-slot">
+  <div class="ad-label">広告</div>
+  <ins class="adsbygoogle" style="display:block"
+       data-ad-client="ca-pub-1298304917726270"
+       data-ad-format="horizontal"
+       data-full-width-responsive="false"></ins>
+</div>
+
+<h2>このページを共有する</h2>
+<div class="share" id="share">
+  <a href="#" data-net="x" rel="nofollow noopener" target="_blank">X</a>
+  <a href="#" data-net="line" rel="nofollow noopener" target="_blank">LINE</a>
+  <a href="#" data-net="hatena" rel="nofollow noopener" target="_blank">はてブ</a>
+  <a href="#" data-net="copy">URLをコピー</a>
+</div>
+
+<!-- WEBNINJA_RELATED_APPS -->
+<div style="margin:2rem 0 0;padding:1rem 1.2rem;background:#fffcf7;border:1px solid #f0e6d2;border-radius:12px;font-family:inherit;">
+  <div style="font-weight:800;color:#8b6b3d;font-size:0.9rem;margin-bottom:0.3rem;">あわせて使えるアプリ</div>
+  <a href="https://ito.kkpwebninja.com/" style="display:block;padding:0.4rem 0;color:#1565c0;text-decoration:none;font-size:0.92rem;line-height:1.6;border-top:1px solid #f3ecd9;">ito お題と数字の配布 — スマホ1台で遊べる協力ゲーム</a>
+  <a href="https://gesture.kkpwebninja.com/" style="display:block;padding:0.4rem 0;color:#1565c0;text-decoration:none;font-size:0.92rem;line-height:1.6;border-top:1px solid #f3ecd9;">ジェスチャーおでこ当て — 言葉を使わずお題を伝える</a>
+  <a href="https://karuta.kkpwebninja.com/" style="display:block;padding:0.4rem 0;color:#1565c0;text-decoration:none;font-size:0.92rem;line-height:1.6;border-top:1px solid #f3ecd9;">かるた読み上げ — 読み手がいなくても全員で取り合える</a>
+  <a href="https://morse.kkpwebninja.com/" style="display:block;padding:0.4rem 0;color:#1565c0;text-decoration:none;font-size:0.92rem;line-height:1.6;border-top:1px solid #f3ecd9;">モールス信号の分岐表 — トンとツーで送り合う</a>
+</div>
+
+<p class="note" style="text-align:center;margin:1.6rem 0 0">
+  『カタン』のファンが作った非公式ツールです。権利は各権利者に帰属します。（v1.1.0）
+</p>
+
+<!-- WEBNINJA_UNIFIED_FOOTER -->
+<footer style="text-align:center;padding:2rem 1rem 2.5rem;font-size:0.78rem;color:#94a3b8;line-height:2;border-top:1px solid #f0e6d2;margin-top:1.6rem;background:#fffcf7;">
+  <div style="font-weight:800;color:#8b6b3d;font-size:0.85rem;margin-bottom:0.4rem;">web忍者の砦</div>
+  <div>
+    <a href="https://kkpwebninja.com/" target="_blank" rel="noopener" style="color:#8b6b3d;text-decoration:none;margin:0 0.5rem;">本丸トップ</a>·
+    <a href="https://privacypolicy.kkpwebninja.com/" target="_blank" rel="noopener" style="color:#8b6b3d;text-decoration:none;margin:0 0.5rem;">プライバシーポリシー</a>·
+    <a href="https://kkpwebninja.com/otoiawase" target="_blank" rel="noopener" style="color:#8b6b3d;text-decoration:none;margin:0 0.5rem;">お問い合わせ</a>·
+    <a href="https://x.com/kkp_webninja" target="_blank" rel="noopener" style="color:#8b6b3d;text-decoration:none;margin:0 0.5rem;">@kkp_webninja</a>
+  </div>
+  <div style="margin-top:0.5rem;color:#bfa97a;">© 2025-2026 web忍者の砦</div>
+</footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ================= 出目 ================= */
+  var counts = {}, history = [];
+  for (var v0=2; v0<=12; v0++) counts[v0] = 0;
+
+  var pad = document.getElementById('pad'), keys = {};
+  for (var v1=2; v1<=12; v1++){
+    var b = document.createElement('button');
+    b.className = 'key' + (v1===7 ? ' seven' : '') + (v1===6||v1===8 ? ' hot' : '');
+    b.dataset.v = v1;
+    b.innerHTML = '<span class="bg"></span><span class="v">'+v1+'</span><span class="c">0</span>';
+    pad.appendChild(b);
+    keys[v1] = {el:b, bg:b.querySelector('.bg'), c:b.querySelector('.c')};
+  }
+
+  function renderDice(){
+    var max = 1, missing = [];
+    var last = history.length ? history[history.length-1] : 0;
+    for (var v=2;v<=12;v++) if (counts[v] > max) max = counts[v];
+    for (v=2;v<=12;v++){
+      keys[v].c.textContent = counts[v];
+      keys[v].bg.style.height = Math.round(counts[v]/max*100) + '%';
+      keys[v].el.classList.toggle('last', v === last);
+      if (counts[v] === 0) missing.push(v);
+    }
+    document.getElementById('mTotal').textContent = history.length;
+    document.getElementById('mSeven').textContent = counts[7];
+    document.getElementById('mMissing').textContent = history.length ? (missing.length ? missing.join(' ') : 'なし') : '—';
+    document.getElementById('recent').textContent = history.length ? '直近　' + history.slice(-9).join('　') : '';
+  }
+  function record(v){ counts[v]++; history.push(v); renderDice(); }
+  renderDice();
+
+  pad.addEventListener('click', function(e){
+    var k = e.target.closest('.key');
+    if (k) record(+k.dataset.v);
+  });
+  document.getElementById('undo').addEventListener('click', function(){
+    var last = history.pop();
+    if (last) counts[last]--;
+    renderDice();
+  });
+  document.getElementById('resetDice').addEventListener('click', function(){
+    for (var v=2;v<=12;v++) counts[v] = 0;
+    history = [];
+    renderDice();
+  });
+
+  /* ================= 振る ================= */
+  var PIPS = {1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};
+  function face(el,n){
+    el.innerHTML = '';
+    for (var i=0;i<9;i++) el.appendChild(document.createElement(PIPS[n].indexOf(i)>=0 ? 'i' : 'span'));
+  }
+  var dA = document.getElementById('dieA'), dB = document.getElementById('dieB');
+  var res = document.getElementById('result'), resNote = document.getElementById('resultNote');
+  var evenBox = document.getElementById('evenMode');
+  var deck = [], busy = false;
+
+  function buildDeck(){
+    deck = [];
+    for (var a=1;a<=6;a++) for (var b=1;b<=6;b++) deck.push([a,b]);
+    for (var i=deck.length-1;i>0;i--){
+      var j = Math.floor(Math.random()*(i+1));
+      var t = deck[i]; deck[i] = deck[j]; deck[j] = t;
+    }
+  }
+  buildDeck();
+  evenBox.addEventListener('change', function(){
+    buildDeck();
+    resNote.textContent = this.checked
+      ? '36通りを1枚ずつ引きます。残り ' + deck.length + ' 通り'
+      : 'ボタンを押して振ります';
+  });
+
+  document.getElementById('roll').addEventListener('click', function(){
+    if (busy) return;
+    busy = true;
+    var pair;
+    if (evenBox.checked){
+      if (!deck.length) buildDeck();
+      pair = deck.pop();
+    } else {
+      pair = [1+Math.floor(Math.random()*6), 1+Math.floor(Math.random()*6)];
+    }
+    dA.classList.add('go'); dB.classList.add('go');
+    setTimeout(function(){ dA.classList.remove('go'); dB.classList.remove('go'); busy = false; }, 320);
+    face(dA, pair[0]); face(dB, pair[1]);
+    var sum = pair[0] + pair[1];
+    res.textContent = sum;
+    res.classList.toggle('seven', sum === 7);
+    resNote.textContent = sum === 7
+      ? '盗賊を動かす。手札8枚以上は半分を捨てる'
+      : (evenBox.checked ? '残り ' + deck.length + ' 通り' : '');
+    record(sum);
+  });
+
+  /* ================= モード切り替え ================= */
+  var roller = document.getElementById('roller');
+  var padHint = document.getElementById('padHint');
+  document.getElementById('modes').addEventListener('click', function(e){
+    var btn = e.target.closest('button');
+    if (!btn) return;
+    var screen = btn.dataset.mode === 'screen';
+    Array.prototype.forEach.call(this.querySelectorAll('button'), function(x){
+      x.classList.toggle('on', x === btn);
+    });
+    roller.style.display = screen ? '' : 'none';
+    padHint.textContent = screen ? '数字を押すと直せます' : '振った数字をタップ';
+  });
+
+  /* ================= 得点 ================= */
+  var COLORS = [
+    {n:'赤',hex:'#c0392b'},{n:'青',hex:'#2c6ea3'},{n:'白',hex:'#f7f3ea'},
+    {n:'橙',hex:'#e8843a'},{n:'緑',hex:'#4a7c4e'},{n:'茶',hex:'#6b4a2f'}
+  ];
+  var FIELDS = [
+    {k:'settle', label:'開拓地', pt:'1点', max:5},
+    {k:'city',   label:'都市',   pt:'2点', max:4},
+    {k:'vpcard', label:'勝利点', pt:'1点', max:5},
+    {k:'knight', label:'騎士', pt:'',  max:14}
+  ];
+  var players = [], hideVp = false, army = -1;
+  function blank(i){
+    return {name:'プレイヤー'+(i+1), color:i%COLORS.length, settle:0, city:0, vpcard:0, knight:0, road:false};
+  }
+  players = [blank(0), blank(1), blank(2)];
+
+  function updateArmy(){
+    var best = -1, top = 2;
+    players.forEach(function(p,i){ if(p.knight > top){ top = p.knight; best = i; } });
+    if (best < 0){ army = -1; return; }
+    var tied = players.filter(function(p){ return p.knight === top; }).length > 1;
+    if (tied){
+      if (army < 0 || !players[army] || players[army].knight !== top) army = -1;
+    } else { army = best; }
+  }
+  function score(i){
+    var p = players[i];
+    var open = p.settle + p.city*2 + (p.road?2:0) + (army===i?2:0);
+    return {open:open, full:open + p.vpcard};
+  }
+
+  var elStrip = document.getElementById('strip');
+  var elSheet = document.getElementById('sheet');
+  var selected = 0;
+
+  function esc(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
+
+  function render(){
+    updateArmy();
+    if (selected >= players.length) selected = players.length - 1;
+
+    var best = 0;
+    players.forEach(function(p,i){ var s = score(i); best = Math.max(best, hideVp ? s.open : s.full); });
+
+    elStrip.innerHTML = players.map(function(p,i){
+      var s = score(i), shown = hideVp ? s.open : s.full;
+      var marks = (p.road ? '路' : '') + (army === i ? '騎' : '');
+      return '<button class="sp' + (shown === best && best > 0 ? ' top' : '') +
+             (selected === i ? ' sel' : '') + '" data-go="'+i+'" aria-expanded="'+(selected===i)+'">' +
+        '<span class="who"><span class="dot" style="background:'+COLORS[p.color].hex+'"></span>' +
+        '<span class="nm">'+esc(p.name)+'</span></span>' +
+        '<span class="pt">'+shown+'</span>' +
+        '<span class="mk">'+marks+'</span>' +
+        '<span class="car">'+(selected === i ? '\u25B4' : '\u25BE')+'</span>' +
+      '</button>';
+    }).join('') + (players.length < 6 ? '<button class="sp addp" data-add="1" aria-label="プレイヤーを追加">＋</button>' : '');
+
+    if (selected < 0 || !players[selected]){
+      elSheet.classList.remove('open');
+      elSheet.innerHTML = '';
+      return;
+    }
+
+    var p = players[selected], s = score(selected);
+    var rows = FIELDS.map(function(f){
+      var shown = (f.k === 'vpcard' && hideVp) ? '?' : p[f.k];
+      return '<div class="r">' +
+        '<span class="lb"><b>'+f.label+'</b>'+(f.pt ? ' '+f.pt : '')+'</span>' +
+        '<button class="step" data-k="'+f.k+'" data-d="-1" aria-label="'+f.label+'を減らす">−</button>' +
+        '<span class="num">'+shown+'</span>' +
+        '<button class="step" data-k="'+f.k+'" data-d="1" aria-label="'+f.label+'を増やす">＋</button>' +
+      '</div>';
+    }).join('');
+
+    elSheet.innerHTML =
+      '<div class="sheet-in">' +
+        '<div class="head">' +
+          '<button class="chip" style="background:'+COLORS[p.color].hex+'" data-color="1" aria-label="色を変える"></button>' +
+          '<input class="name" id="nameIn" value="'+esc(p.name)+'" aria-label="プレイヤー名">' +
+          '<span class="vp">'+(hideVp ? s.open : s.full)+'<small>点</small></span>' +
+          '<button class="close" data-close="1" aria-label="閉じる">×</button>' +
+        '</div>' +
+        '<div class="rows">'+rows+'</div>' +
+        '<div class="badge-row">' +
+          '<button class="toggle '+(p.road?'on':'')+'" data-road="1">最長交易路 +2</button>' +
+          (army === selected ? '<span class="army-mark">最大騎士力 +2</span>' : '') +
+          (players.length > 2 ? '<button class="toggle" data-del="1" aria-label="このプレイヤーを削除">×</button>' : '') +
+        '</div>' +
+      '</div>';
+    elSheet.classList.add('open');
+  }
+  render();
+
+  elStrip.addEventListener('click', function(e){
+    var b = e.target.closest('.sp');
+    if (!b) return;
+    if (b.dataset.add){
+      if (players.length >= 6) return;
+      players.push(blank(players.length));
+      selected = players.length - 1;
+      render();
+      return;
+    }
+    var note = document.getElementById('stripNote');
+    if (note) note.style.display = 'none';
+    var i = +b.dataset.go;
+    selected = (selected === i) ? -1 : i;
+    render();
+  });
+
+  elSheet.addEventListener('click', function(e){
+    if (selected < 0) return;
+    var st = e.target.closest('.step');
+    if (st){
+      var p = players[selected], k = st.dataset.k;
+      var max = FIELDS.filter(function(f){ return f.k === k; })[0].max;
+      p[k] = Math.min(max, Math.max(0, p[k] + (+st.dataset.d)));
+      render(); return;
+    }
+    var t = e.target.closest('button');
+    if (!t) return;
+    if (t.dataset.close){ selected = -1; render(); return; }
+    if (t.dataset.road){
+      var had = players[selected].road;
+      players.forEach(function(pl){ pl.road = false; });
+      players[selected].road = !had;
+      render(); return;
+    }
+    if (t.dataset.color){
+      players[selected].color = (players[selected].color + 1) % COLORS.length;
+      render(); return;
+    }
+    if (t.dataset.del){
+      players.splice(selected, 1);
+      army = -1; selected = -1;
+      render(); return;
+    }
+  });
+
+  elSheet.addEventListener('input', function(e){
+    if (e.target.id === 'nameIn' && selected >= 0){
+      players[selected].name = e.target.value;
+      var chip = elStrip.querySelector('.sp[data-go="'+selected+'"] .nm');
+      if (chip) chip.textContent = e.target.value;
+    }
+  });
+
+  document.getElementById('hide').addEventListener('click', function(){
+    hideVp = !hideVp;
+    this.textContent = hideVp ? '勝利点カードを表に戻す' : '勝利点カードを伏せる';
+    render();
+  });
+  document.getElementById('resetScore').addEventListener('click', function(){
+    players = players.map(function(p,i){ var b = blank(i); b.name = p.name; b.color = p.color; return b; });
+    army = -1;
+    render();
+  });
+
+  /* ================= 画像で保存 ================= */
+  function drawCard(){
+    var W = 1200, H = 630, c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    var g = c.getContext('2d');
+    var SERIF = '"Noto Serif JP", serif';
+
+    g.fillStyle = '#fdf6ec'; g.fillRect(0,0,W,H);
+    g.strokeStyle = '#e6d9c6'; g.lineWidth = 2; g.strokeRect(26,26,W-52,H-52);
+
+    var d = new Date();
+    var dateStr = d.getFullYear() + '年' + (d.getMonth()+1) + '月' + d.getDate() + '日';
+
+    g.fillStyle = '#3b2c22'; g.font = '600 36px ' + SERIF;
+    g.fillText('カタンの記録', 70, 104);
+    g.fillStyle = '#7a6656'; g.font = '20px ' + SERIF;
+    g.fillText(dateStr, 70, 142);
+
+    // 左：順位
+    var ranked = players.map(function(p,i){ return {p:p, s:score(i).full}; })
+                        .sort(function(a,b){ return b.s - a.s; });
+    var y = 210;
+    ranked.forEach(function(row, i){
+      g.fillStyle = COLORS[row.p.color].hex;
+      g.beginPath(); g.arc(84, y-9, 11, 0, Math.PI*2); g.fill();
+      g.strokeStyle = 'rgba(59,44,34,.3)'; g.lineWidth = 1; g.stroke();
+
+      g.fillStyle = (i === 0 && row.s >= 10) ? '#c76a26' : '#3b2c22';
+      g.font = (i === 0 ? '600 30px ' : '26px ') + SERIF;
+      var nm = row.p.name.length > 12 ? row.p.name.slice(0,12) + '…' : row.p.name;
+      g.fillText(nm, 112, y);
+
+      g.font = '600 34px ' + SERIF; g.textAlign = 'right';
+      g.fillText(row.s + '点', 520, y);
+      g.textAlign = 'left';
+      y += 58;
+    });
+
+    // 右：出目
+    var bx = 620, bw = 510, by = 200, bh = 300;
+    g.strokeStyle = '#e6d9c6'; g.lineWidth = 1;
+    g.beginPath(); g.moveTo(590, 180); g.lineTo(590, 520); g.stroke();
+
+    g.fillStyle = '#7a6656'; g.font = '20px ' + SERIF;
+    g.fillText('出目 ' + history.length + '回　うち7が' + counts[7] + '回', bx, 200);
+
+    var max = 1;
+    for (var v=2; v<=12; v++) if (counts[v] > max) max = counts[v];
+    var slot = bw / 11, base = 470;
+    for (v=2; v<=12; v++){
+      var i2 = v - 2;
+      var h = Math.round(counts[v] / max * 190);
+      var x = bx + i2 * slot;
+      g.fillStyle = (v === 7) ? '#b0654a' : '#e8843a';
+      g.fillRect(x + 6, base - h, slot - 12, h);
+      g.fillStyle = (v===6||v===8) ? '#c0392b' : '#7a6656';
+      g.font = '20px ' + SERIF;
+      g.textAlign = 'center';
+      g.fillText(String(v), x + slot/2, base + 28);
+      g.fillStyle = '#7a6656'; g.font = '16px ' + SERIF;
+      g.fillText(String(counts[v]), x + slot/2, base + 50);
+      g.textAlign = 'left';
+    }
+
+    g.fillStyle = '#7a6656'; g.font = '18px ' + SERIF;
+    g.fillText('catan.kkpwebninja.com', 70, H - 62);
+
+    return c;
+  }
+
+  document.getElementById('saveImg').addEventListener('click', function(){
+    var note = document.getElementById('saveNote');
+    var go = function(){
+      try {
+        var c = drawCard();
+        var a = document.createElement('a');
+        var d = new Date();
+        var stamp = d.getFullYear() + String(d.getMonth()+1).padStart(2,'0') + String(d.getDate()).padStart(2,'0');
+        a.download = 'catan-' + stamp + '.png';
+        a.href = c.toDataURL('image/png');
+        a.click();
+        note.textContent = '画像を保存しました。';
+      } catch (err) {
+        note.textContent = '画像を作れませんでした。ブラウザを変えて試してください。';
+      }
+    };
+    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(go); } else { go(); }
+  });
+
+  /* ================= 初期配置 ================= */
+  var TILE = {
+    wood:  {label:'木', fill:'#4f7a4a', text:'#fff'},
+    sheep: {label:'羊', fill:'#a9c184', text:'#3b2c22'},
+    wheat: {label:'麦', fill:'#e6c568', text:'#3b2c22'},
+    brick: {label:'土', fill:'#c98a5e', text:'#fff'},
+    ore:   {label:'鉄', fill:'#9ba2ab', text:'#fff'},
+    desert:{label:'砂', fill:'#e2d3b3', text:'#7a6656'}
+  };
+  var RESOURCES = []
+    .concat(fill('wood',4), fill('sheep',4), fill('wheat',4))
+    .concat(fill('brick',3), fill('ore',3), fill('desert',1));
+  var NUMBERS = [2,12].concat(fill(3,2), fill(4,2), fill(5,2), fill(6,2), fill(8,2), fill(9,2), fill(10,2), fill(11,2));
+  function fill(v,n){ var a=[]; for(var i=0;i<n;i++) a.push(v); return a; }
+  function shuffle(a){
+    a = a.slice();
+    for (var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i];a[i]=a[j];a[j]=t; }
+    return a;
+  }
+
+  var R = 42, HEXW = Math.sqrt(3)*R, ROWS = [3,4,5,4,3];
+  var cells = [], neighbors = [];
+  (function layout(){
+    var y = R + 4;
+    for (var r=0; r<ROWS.length; r++){
+      var n = ROWS[r];
+      var x0 = (5 - n) * HEXW / 2 + HEXW/2 + 4;
+      for (var i=0;i<n;i++) cells.push({x: x0 + i*HEXW, y: y});
+      y += 1.5 * R;
+    }
+    cells.forEach(function(c, i){
+      var list = [];
+      cells.forEach(function(o, j){
+        if (i === j) return;
+        var d = Math.sqrt(Math.pow(c.x-o.x,2) + Math.pow(c.y-o.y,2));
+        if (d < HEXW * 1.15) list.push(j);
+      });
+      neighbors.push(list);
+    });
+  })();
+
+  function placeResources(){
+    for (var t=0; t<400; t++){
+      var arr = shuffle(RESOURCES), pairs = 0;
+      for (var i=0;i<arr.length;i++){
+        for (var k=0;k<neighbors[i].length;k++){
+          var j = neighbors[i][k];
+          if (j > i && arr[j] === arr[i]) pairs++;
+        }
+      }
+      if (pairs <= 2) return arr;
+    }
+    return shuffle(RESOURCES);
+  }
+  function placeNumbers(res){
+    var slots = [];
+    res.forEach(function(r,i){ if (r !== 'desert') slots.push(i); });
+    for (var t=0; t<800; t++){
+      var nums = shuffle(NUMBERS), map = {}, ok = true;
+      slots.forEach(function(s,i){ map[s] = nums[i]; });
+      for (var a=0; a<slots.length && ok; a++){
+        var i2 = slots[a], v = map[i2];
+        for (var k=0;k<neighbors[i2].length;k++){
+          var j = neighbors[i2][k];
+          if (map[j] === undefined) continue;
+          var w = map[j];
+          if ((v===6||v===8) && (w===6||w===8)) { ok = false; break; }
+          if ((v===2||v===12) && (w===2||w===12)) { ok = false; break; }
+        }
+      }
+      if (ok) return map;
+    }
+    var fb = shuffle(NUMBERS), m = {};
+    slots.forEach(function(s,i){ m[s] = fb[i]; });
+    return m;
+  }
+
+  function hexPoints(cx, cy){
+    var pts = [];
+    for (var i=0;i<6;i++){
+      var ang = Math.PI/180 * (60*i - 90);
+      pts.push((cx + R*Math.cos(ang)).toFixed(1) + ',' + (cy + R*Math.sin(ang)).toFixed(1));
+    }
+    return pts.join(' ');
+  }
+
+  function drawBoard(){
+    var res = placeResources(), nums = placeNumbers(res);
+    var W = Math.ceil(5*HEXW + 8), H = Math.ceil(2*R + 4*1.5*R + 8);
+    var s = '<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="カタンの初期配置">';
+    cells.forEach(function(c, i){
+      var t = TILE[res[i]];
+      s += '<polygon points="'+hexPoints(c.x,c.y)+'" fill="'+t.fill+'" stroke="#fdf6ec" stroke-width="2"/>';
+      s += '<text x="'+c.x+'" y="'+(c.y - R + 22)+'" text-anchor="middle" font-size="13" fill="'+t.text+'" font-family="serif" opacity=".85">'+t.label+'</text>';
+      var v = nums[i];
+      if (v){
+        var ways = 6 - Math.abs(7 - v);
+        var red = (v===6 || v===8);
+        s += '<circle cx="'+c.x+'" cy="'+(c.y+4)+'" r="15" fill="#fffdf8" stroke="#e6d9c6"/>';
+        s += '<text x="'+c.x+'" y="'+(c.y+7)+'" text-anchor="middle" font-size="17" font-family="Cormorant Garamond, serif" font-weight="600" fill="'+(red?'#c0392b':'#3b2c22')+'">'+v+'</text>';
+        var dots = '';
+        for (var d=0; d<ways; d++){
+          var dx = c.x - (ways-1)*2.6 + d*5.2;
+          dots += '<circle cx="'+dx.toFixed(1)+'" cy="'+(c.y+14)+'" r="1.5" fill="'+(red?'#c0392b':'#7a6656')+'"/>';
+        }
+        s += dots;
+      }
+    });
+    s += '</svg>';
+    document.getElementById('board').innerHTML = s;
+  }
+  var mapbox = document.getElementById('mapbox');
+  mapbox.addEventListener('toggle', function(){
+    if (mapbox.open && !document.getElementById('board').innerHTML) drawBoard();
+  });
+  document.getElementById('genBoard').addEventListener('click', drawBoard);
+
+  /* ================= 共有 ================= */
+  document.getElementById('share').addEventListener('click', function(e){
+    var a = e.target.closest('a');
+    if (!a) return;
+    var url = 'https://catan.kkpwebninja.com/';
+    var text = 'カタンの点数計算とサイコロ';
+    var net = a.dataset.net, to = '';
+    if (net === 'x')      to = 'https://x.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(url);
+    if (net === 'line')   to = 'https://social-plugins.line.me/lineit/share?url=' + encodeURIComponent(url);
+    if (net === 'hatena') to = 'https://b.hatena.ne.jp/add?mode=confirm&url=' + encodeURIComponent(url);
+    if (net === 'copy'){
+      e.preventDefault();
+      if (navigator.clipboard) navigator.clipboard.writeText(url);
+      a.textContent = 'コピーしました';
+      setTimeout(function(){ a.textContent = 'URLをコピー'; }, 1600);
+      return;
+    }
+    a.href = to;
+  });
+
+})();
+</script>
+
+<script>
+// 広告枠ぶんだけ読み込む。二重に走らせない
+(function(){
+  var slots = document.querySelectorAll('ins.adsbygoogle');
+  for (var i = 0; i < slots.length; i++){
+    try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) {}
+  }
+})();
+</script>
+</body>
+</html>
