@@ -12,6 +12,7 @@
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="theme-color" content="#e8843a">
 <!-- WEBNINJA_UNIFIED_FAVICON -->
+<link rel="stylesheet" href="https://kkpwebninja.com/shared/fortress-share.css">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -422,6 +423,13 @@ summary:active{ background:#f7ecdc }
   <button class="quiet accent" id="saveImg">画像で保存</button>
 </div>
 <p class="note" id="saveNote">終わったあとの点数と出目を1枚の画像にまとめます。</p>
+
+<div data-fortress-share
+     data-site="ninja-catan"
+     data-trigger="result"
+     data-label="このツールを教える"
+     data-text-fn="getShareText"
+     data-hashtags="#カタン #ボードゲーム"></div>
 
 <div class="ad-slot">
   <div class="ad-label">広告</div>
@@ -865,6 +873,18 @@ summary:active{ background:#f7ecdc }
     render();
   });
 
+  /* ================= シェア =================
+     点数が動いているときは最高点を入れる。まだ0点のままなら道具の説明にする。 */
+  window.getShareText = function(){
+    try {
+      var max = 0;
+      players.forEach(function(p, i){ max = Math.max(max, score(i).full); });
+      if (max >= 10) return 'カタン、' + max + '点で決着。点数も出目もスマホに数えてもらいました';
+      if (max > 0)   return 'カタンの点数、いま最高' + max + '点。数え直しで手が止まらなくなりました';
+    } catch (e) {}
+    return 'カタンの勝利点とサイコロをスマホ1台で。数え直しでゲームが止まらなくなります';
+  };
+
   /* ================= 画像で保存 ================= */
   function drawCard(){
     var W = 1200, H = 630, c = document.createElement('canvas');
@@ -1103,5 +1123,6 @@ summary:active{ background:#f7ecdc }
   }
 })();
 </script>
+<script src="https://kkpwebninja.com/shared/fortress-share.js" defer></script>
 </body>
 </html>
