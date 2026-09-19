@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>カタンの点数計算とサイコロ｜勝利点の数え方・出目の記録</title>
-<meta name="description" content="カタンの勝利点を自動で計算し、サイコロを振る・実際の出目を記録するツール。開拓地1点、都市2点、最長交易路と最大騎士力が各2点、10点で勝ち。結果は画像で保存できます。7が出たときの処理や建設コストもまとめています。">
+<title>カタンの点数計算・サイコロの確率表・初期配置｜勝利点の数え方</title>
+<meta name="description" content="カタンの勝利点を自動で計算し、サイコロを振る・実際の出目を記録するツール。サイコロ2個の出目の確率表（36通り）と、6と8・2と12が隣り合わない初期配置の生成つき。開拓地1点、都市2点、最長交易路と最大騎士力が各2点、10点で勝ち。7が出たときの処理や建設コストもまとめています。">
 <link rel="canonical" href="https://catan.kkpwebninja.com/">
 <link rel="alternate" hreflang="ja" href="https://catan.kkpwebninja.com/">
 <link rel="alternate" hreflang="x-default" href="https://catan.kkpwebninja.com/">
@@ -18,8 +18,8 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="カタンの点数計算とサイコロ｜勝利点の数え方・出目の記録">
-<meta property="og:description" content="勝利点を自動計算し、サイコロを振る・出目を記録できる1ページ。結果は画像で保存できます。">
+<meta property="og:title" content="カタンの点数計算・サイコロの確率表・初期配置｜勝利点の数え方">
+<meta property="og:description" content="勝利点を自動計算し、サイコロを振る・出目を記録できる1ページ。出目の確率表（36通り）と初期配置の生成つき。結果は画像で保存できます。">
 <meta property="og:url" content="https://catan.kkpwebninja.com/">
 <meta property="og:site_name" content="カタンの点数計算とサイコロ">
 <meta property="og:locale" content="ja_JP">
@@ -54,10 +54,11 @@
       "operatingSystem":"Web",
       "browserRequirements":"JavaScriptが有効なブラウザ",
       "inLanguage":"ja",
-      "softwareVersion":"1.1.0",
+      "softwareVersion":"1.1.1",
       "datePublished":"2026-09-04",
-      "description":"ボードゲーム『カタン』の勝利点を自動計算し、サイコロを振る・実際の出目を記録できるツール。結果は画像で保存できます。",
-      "featureList":["勝利点の自動計算","最大騎士力の自動判定","サイコロを振る","出目の記録と集計","偏りをならす振り方","初期配置の生成","結果の画像保存"],
+      "dateModified":"2026-09-19",
+      "description":"ボードゲーム『カタン』の勝利点を自動計算し、サイコロを振る・実際の出目を記録できるツール。サイコロ2個の出目の確率表（36通り）と初期配置の生成つき。結果は画像で保存できます。",
+      "featureList":["勝利点の自動計算","最大騎士力の自動判定","サイコロを振る","出目の記録と集計","偏りをならす振り方","サイコロの出目の確率表（36通り）","初期配置の生成","結果の画像保存"],
       "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},
       "author":{"@type":"Organization","name":"web忍者の砦"},
       "publisher":{"@type":"Organization","name":"web忍者の砦","url":"https://kkpwebninja.com/"},
@@ -300,6 +301,30 @@ summary::-webkit-details-marker{display:none}
 summary::after{content:"＋";position:absolute;right:2px;color:var(--ink-soft);font-size:.85rem}
 details[open] summary::after{content:"−"}
 details p{font-size:.85rem;color:var(--ink-soft);margin:0 0 12px;line-height:1.9}
+
+/* ===== 読み物（使い方・数え方・確率・よくある確認）=====
+   ツールの画面は小さい字で詰めてあるが、読む部分は別。
+   .doc の中だけ大きくして、上の操作部の寸法には触らない。 */
+.doc{color:#333}
+.doc h2{
+  display:block;font-size:1.2rem;letter-spacing:.04em;color:var(--ink);line-height:1.5;
+  margin:40px 0 14px;padding-bottom:7px;border-bottom:2px solid var(--line);
+}
+.doc h3{font-size:1.05rem;color:var(--ink);margin:28px 0 8px}
+.doc p{font-size:1rem;line-height:1.8;color:#333;margin:0 0 14px}
+.doc a{color:#1a6fc4}
+.doc .steps li{font-size:1rem;padding:12px 0 12px 42px}
+.doc .steps li::before{top:15px}
+.doc .steps b{font-size:1rem;color:var(--ink)}
+.doc .steps span{font-size:.95rem;color:#333;line-height:1.8}
+.doc table{font-size:.94rem;color:#333;margin:8px 0 12px}
+.doc th,.doc td{padding:9px 6px}
+.doc th{font-size:.875rem;color:#333;letter-spacing:.03em;background:#fbf1e1}
+.doc td.hot-n{color:var(--red)}
+.doc summary{font-size:1rem;padding:13px 24px 13px 2px;color:var(--ink);line-height:1.6}
+.doc details p{font-size:.97rem;color:#333;line-height:1.8;margin:0 0 14px}
+.doc .log-list{font-size:.94rem;color:#333;line-height:1.8}
+.doc .log-list b{font-size:1rem}
 .share{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
 .share a{
   flex:1;min-width:80px;text-align:center;text-decoration:none;color:var(--ink-soft);
@@ -439,14 +464,14 @@ summary:active{ background:#f7ecdc }
        data-full-width-responsive="false"></ins>
 </div>
 
+<article class="doc">
+
 <h2>使い方</h2>
 <ol class="steps">
   <li><b>人数と名前を決める</b><span>プレイヤーを追加して、名前と色を設定します。色の丸を押すと色が変わります。6人まで対応しています。</span></li>
   <li><b>サイコロを振る、または出目を記録する</b><span>画面で振ると出目が自動で記録されます。実物のサイコロを使う卓では、出た数字をタップしてください。</span></li>
   <li><b>建てたものを数える</b><span>開拓地や都市を建てたら数を増やします。点数は自動で計算され、10点に届くと印がつきます。</span></li>
 </ol>
-
-<article class="doc">
 
 <h2>勝利点の数え方</h2>
 <p>カタンは勝利点10点に届いた人の勝ちです。到達を宣言できるのは自分の手番のうちだけで、人の手番中に条件を満たしても、そのときは勝ちになりません。</p>
@@ -470,23 +495,28 @@ summary:active{ background:#f7ecdc }
 </table>
 <p>1人が置けるコマは街道15本、開拓地5個、都市4個までです。開拓地を5個使い切ったら、都市に建て替えて開拓地を手元に戻さないと、それ以上は広げられません。</p>
 
-<h2>数字の出やすさ</h2>
-<p>サイコロ2個の出方は36通りあります。数字ごとの組み合わせの数はこうなります。</p>
+<h2 id="kakuritsu">サイコロの出目の確率（36通り）</h2>
+<p>サイコロ2個の出方は 6×6 の36通りあります。数字ごとの組み合わせの数と確率はこうなります。確率は「組み合わせの数÷36」を小数第2位で四捨五入したものです。</p>
 <table>
-  <tr><th>数字</th><th>組み合わせ</th><th class="r2">36回あたり</th></tr>
-  <tr><td>2</td><td>1通り</td><td class="r2">1回</td></tr>
-  <tr><td>3</td><td>2通り</td><td class="r2">2回</td></tr>
-  <tr><td>4</td><td>3通り</td><td class="r2">3回</td></tr>
-  <tr><td>5</td><td>4通り</td><td class="r2">4回</td></tr>
-  <tr><td class="hot-n">6</td><td>5通り</td><td class="r2">5回</td></tr>
-  <tr><td>7</td><td>6通り</td><td class="r2">6回</td></tr>
-  <tr><td class="hot-n">8</td><td>5通り</td><td class="r2">5回</td></tr>
-  <tr><td>9</td><td>4通り</td><td class="r2">4回</td></tr>
-  <tr><td>10</td><td>3通り</td><td class="r2">3回</td></tr>
-  <tr><td>11</td><td>2通り</td><td class="r2">2回</td></tr>
-  <tr><td>12</td><td>1通り</td><td class="r2">1回</td></tr>
+  <tr><th>出目</th><th>組み合わせ</th><th>36回あたり</th><th class="r2">確率</th></tr>
+  <tr><td>2</td><td>1通り</td><td>1回</td><td class="r2">2.8%</td></tr>
+  <tr><td>3</td><td>2通り</td><td>2回</td><td class="r2">5.6%</td></tr>
+  <tr><td>4</td><td>3通り</td><td>3回</td><td class="r2">8.3%</td></tr>
+  <tr><td>5</td><td>4通り</td><td>4回</td><td class="r2">11.1%</td></tr>
+  <tr><td class="hot-n">6</td><td>5通り</td><td>5回</td><td class="r2">13.9%</td></tr>
+  <tr><td>7</td><td>6通り</td><td>6回</td><td class="r2">16.7%</td></tr>
+  <tr><td class="hot-n">8</td><td>5通り</td><td>5回</td><td class="r2">13.9%</td></tr>
+  <tr><td>9</td><td>4通り</td><td>4回</td><td class="r2">11.1%</td></tr>
+  <tr><td>10</td><td>3通り</td><td>3回</td><td class="r2">8.3%</td></tr>
+  <tr><td>11</td><td>2通り</td><td>2回</td><td class="r2">5.6%</td></tr>
+  <tr><td>12</td><td>1通り</td><td>1回</td><td class="r2">2.8%</td></tr>
 </table>
+<p>いちばん出やすいのは7（6通り・16.7%）、次が6と8（各5通り・13.9%）です。2と12は各1通りで、36回に1回しか出ません。6と8を合わせると36回のうち10回、5と9まで入れると18回で、ちょうど半分になります。</p>
 <p>初期配置では、接する3つの土地の数字の強さを足して比べます。6と8が赤く印刷されているのはこのためです。ただし1回のゲームで振る回数は数十回ほどなので、確率どおりには均されません。上のツールで記録していくと、その日の卓がどう転がっているかが見えます。</p>
+
+<h2 id="shoki-haichi">初期配置をつくる</h2>
+<p>ページのいちばん上にある「<a href="#mapbox" id="openMap">初期配置をつくる</a>」を開くと、土地タイル19枚（木4・羊4・麦4・土3・鉄3・砂漠1）と数字チップ18枚の並びを1つ作ります。「並べ直す」を押すたびに別の並びになります。</p>
+<p>並べるときに見ているのは3つです。6と8の土地どうしが隣り合わないこと（6と6、8と8も含みます）、2と12が隣り合わないこと、同じ資源の土地が隣り合う組を2組までに抑えること。砂漠には数字を置きません。港は入っていないので、実物のタイルを並べるときの下敷きとして使ってください。</p>
 
 <h2>よくある確認</h2>
 
@@ -550,13 +580,15 @@ summary:active{ background:#f7ecdc }
   </div>
 </div>
 
+<div class="doc">
 <h2>このツールについて</h2>
-<p class="note" style="margin-top:0">
+<p>
 点数は入力した数から計算しているだけなので、入れ忘れがあればそのぶんずれます。最終的な勝敗は盤面で確かめてください。得点も出目も、ページを閉じるかリロードすると消えます。1ゲームぶんのメモとして使う想定です。
 </p>
 
 <h2>更新履歴</h2>
-<p class="log-list"><b>v1.1.0（2026年9月4日）</b><br>初期配置を生成する機能を追加。6と8、2と12が隣り合わないように配置します。<br><br><b>v1.0.0（2026年9月4日）</b><br>初期リリース。勝利点の自動計算、最大騎士力の自動判定、サイコロを振る機能、出目の記録、偏りをならす振り方、結果の画像保存。</p>
+<p class="log-list"><b>v1.1.1（2026年9月19日）</b><br>出目の確率表に確率（%）の列を追加。初期配置の並べ方の説明を追加。使い方と解説の文字を大きくしました。<br><br><b>v1.1.0（2026年9月4日）</b><br>初期配置を生成する機能を追加。6と8、2と12が隣り合わないように配置します。<br><br><b>v1.0.0（2026年9月4日）</b><br>初期リリース。勝利点の自動計算、最大騎士力の自動判定、サイコロを振る機能、出目の記録、偏りをならす振り方、結果の画像保存。</p>
+</div>
 
 <div class="ad-slot">
   <div class="ad-label">広告</div>
@@ -584,7 +616,7 @@ summary:active{ background:#f7ecdc }
 </div>
 
 <p class="note" style="text-align:center;margin:1.6rem 0 0">
-  『カタン』のファンが作った非公式ツールです。権利は各権利者に帰属します。（v1.1.0）
+  『カタン』のファンが作った非公式ツールです。権利は各権利者に帰属します。（v1.1.1）
 </p>
 
 <!-- WEBNINJA_UNIFIED_FOOTER -->
@@ -1090,6 +1122,12 @@ summary:active{ background:#f7ecdc }
     if (mapbox.open && !document.getElementById('board').innerHTML) drawBoard();
   });
   document.getElementById('genBoard').addEventListener('click', drawBoard);
+  /* 解説の「初期配置をつくる」から、上の欄を開いて移動する */
+  document.getElementById('openMap').addEventListener('click', function(e){
+    e.preventDefault();
+    mapbox.open = true;
+    mapbox.scrollIntoView({block:'start'});
+  });
 
   /* ================= 共有 ================= */
   document.getElementById('share').addEventListener('click', function(e){
