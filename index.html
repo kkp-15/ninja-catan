@@ -12,7 +12,6 @@
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="theme-color" content="#e8843a">
 <!-- WEBNINJA_UNIFIED_FAVICON -->
-<link rel="stylesheet" href="https://kkpwebninja.com/shared/fortress-share.css">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -325,11 +324,6 @@ details p{font-size:.85rem;color:var(--ink-soft);margin:0 0 12px;line-height:1.9
 .doc details p{font-size:.97rem;color:#333;line-height:1.8;margin:0 0 14px}
 .doc .log-list{font-size:.94rem;color:#333;line-height:1.8}
 .doc .log-list b{font-size:1rem}
-.share{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
-.share a{
-  flex:1;min-width:80px;text-align:center;text-decoration:none;color:var(--ink-soft);
-  border:1px solid var(--line);border-radius:8px;padding:8px 6px;font-size:.78rem;background:#fff;
-}
 .log-list{font-size:.82rem;color:var(--ink-soft);line-height:1.9}
 .log-list b{color:var(--ink);font-weight:600;font-size:.85rem}
 .note{font-size:.76rem;color:var(--ink-soft);line-height:1.75;margin-top:14px}
@@ -338,20 +332,20 @@ footer{margin-top:38px;padding-top:14px;border-top:1px solid var(--line);text-al
 
 /* ===== 押せるものの共通ルール ===== */
 /* 浮いている＝押せる。枠だけのもの（容器・表示）は浮かせない */
-button, summary, a[data-net]{ -webkit-tap-highlight-color:rgba(232,132,58,.18) }
+button, summary{ -webkit-tap-highlight-color:rgba(232,132,58,.18) }
 
-.btn, .quiet, .key, .sp, .step, .toggle, .chip, .share a{
+.btn, .quiet, .key, .sp, .step, .toggle, .chip{
   box-shadow:0 2px 0 var(--edge);
   transition:transform .06s ease, box-shadow .06s ease;
 }
 .btn{ box-shadow:0 3px 0 var(--orange-deep) }
 .btn:active{ transform:translateY(3px); box-shadow:0 0 0 var(--orange-deep) }
 .quiet:active, .key:active, .sp:active, .step:active,
-.toggle:active, .chip:active, .share a:active{
+.toggle:active, .chip:active{
   transform:translateY(2px); box-shadow:0 0 0 var(--edge);
 }
 @media (prefers-reduced-motion:reduce){
-  .btn, .quiet, .key, .sp, .step, .toggle, .chip, .share a{ transition:none }
+  .btn, .quiet, .key, .sp, .step, .toggle, .chip{ transition:none }
 }
 
 /* モード切替は溝の中に押しボタンが入っている形に */
@@ -454,13 +448,6 @@ a.buy { border-radius: 6px; }
   <button class="quiet accent" id="saveImg">画像で保存</button>
 </div>
 <p class="note" id="saveNote">終わったあとの点数と出目を1枚の画像にまとめます。</p>
-
-<div data-fortress-share
-     data-site="ninja-catan"
-     data-trigger="result"
-     data-label="このツールを教える"
-     data-text-fn="getShareText"
-     data-hashtags="#カタン #ボードゲーム"></div>
 
 <div class="ad-slot">
   <div class="ad-label">広告</div>
@@ -604,14 +591,6 @@ a.buy { border-radius: 6px; }
        data-ad-slot="2937937957"
        data-ad-format="rectangle"
        data-full-width-responsive="false"></ins>
-</div>
-
-<h2>このページを共有する</h2>
-<div class="share" id="share">
-  <a href="#" data-net="x" rel="nofollow noopener" target="_blank">X</a>
-  <a href="#" data-net="line" rel="nofollow noopener" target="_blank">LINE</a>
-  <a href="#" data-net="hatena" rel="nofollow noopener" target="_blank">はてブ</a>
-  <a href="#" data-net="copy">URLをコピー</a>
 </div>
 
 <!-- WEBNINJA_RELATED_APPS -->
@@ -913,18 +892,6 @@ a.buy { border-radius: 6px; }
     render();
   });
 
-  /* ================= シェア =================
-     点数が動いているときは最高点を入れる。まだ0点のままなら道具の説明にする。 */
-  window.getShareText = function(){
-    try {
-      var max = 0;
-      players.forEach(function(p, i){ max = Math.max(max, score(i).full); });
-      if (max >= 10) return 'カタン、' + max + '点で決着。点数も出目もスマホに数えてもらいました';
-      if (max > 0)   return 'カタンの点数、いま最高' + max + '点。数え直しで手が止まらなくなりました';
-    } catch (e) {}
-    return 'カタンの勝利点とサイコロをスマホ1台で。数え直しでゲームが止まらなくなります';
-  };
-
   /* ================= 画像で保存 ================= */
   function drawCard(){
     var W = 1200, H = 630, c = document.createElement('canvas');
@@ -1137,26 +1104,6 @@ a.buy { border-radius: 6px; }
     mapbox.scrollIntoView({block:'start'});
   });
 
-  /* ================= 共有 ================= */
-  document.getElementById('share').addEventListener('click', function(e){
-    var a = e.target.closest('a');
-    if (!a) return;
-    var url = 'https://catan.kkpwebninja.com/?d=20260905';
-    var text = 'カタンの点数計算とサイコロ';
-    var net = a.dataset.net, to = '';
-    if (net === 'x')      to = 'https://x.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(url);
-    if (net === 'line')   to = 'https://social-plugins.line.me/lineit/share?url=' + encodeURIComponent(url);
-    if (net === 'hatena') to = 'https://b.hatena.ne.jp/add?mode=confirm&url=' + encodeURIComponent(url);
-    if (net === 'copy'){
-      e.preventDefault();
-      if (navigator.clipboard) navigator.clipboard.writeText(url);
-      a.textContent = 'コピーしました';
-      setTimeout(function(){ a.textContent = 'URLをコピー'; }, 1600);
-      return;
-    }
-    a.href = to;
-  });
-
 })();
 </script>
 
@@ -1169,6 +1116,5 @@ a.buy { border-radius: 6px; }
   }
 })();
 </script>
-<script src="https://kkpwebninja.com/shared/fortress-share.js" defer></script>
 </body>
 </html>
