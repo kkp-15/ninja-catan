@@ -5,7 +5,7 @@
 <meta name="msvalidate.01" content="EF6E7C7B123A3218DAE3B152F5B0764D" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>カタンの点数計算・サイコロの確率表・初期配置｜勝利点の数え方</title>
+<title>カタンの点数計算・サイコロの確率表・初期配置｜勝利点の数え方（ファンが作った非公式ツール）</title>
 <meta name="description" content="カタンの勝利点を自動で計算し、サイコロを振る・実際の出目を記録するツール。サイコロ2個の出目の確率表（36通り）と、6と8・2と12が隣り合わない初期配置の生成つき。開拓地1点、都市2点、最長交易路と最大騎士力が各2点、10点で勝ち。7が出たときの処理や建設コストもまとめています。">
 <link rel="canonical" href="https://catan.kkpwebninja.com/">
 <link rel="alternate" hreflang="ja" href="https://catan.kkpwebninja.com/">
@@ -18,13 +18,14 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="カタンの点数計算・サイコロの確率表・初期配置｜勝利点の数え方">
+<meta property="og:title" content="カタンの点数計算・サイコロの確率表・初期配置｜勝利点の数え方（ファンが作った非公式ツール）">
 <meta property="og:description" content="勝利点を自動計算し、サイコロを振る・出目を記録できる1ページ。出目の確率表（36通り）と初期配置の生成つき。結果は画像で保存できます。">
 <meta property="og:url" content="https://catan.kkpwebninja.com/">
 <meta property="og:site_name" content="カタンの点数計算とサイコロ">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://catan.kkpwebninja.com/ogp.png?d=20260905">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="カタンの点数計算・サイコロの確率表・初期配置｜勝利点の数え方（ファンが作った非公式ツール）">
 <meta name="twitter:image" content="https://catan.kkpwebninja.com/ogp.png?d=20260905">
 
 <!-- GA4（砦共通） -->
@@ -48,7 +49,7 @@
     {
       "@type":"WebApplication",
       "@id":"https://catan.kkpwebninja.com/#app",
-      "name":"カタンの点数計算とサイコロ",
+      "name":"カタンの点数計算とサイコロ（非公式）",
       "url":"https://catan.kkpwebninja.com/",
       "applicationCategory":"GameApplication",
       "operatingSystem":"Web",
@@ -57,7 +58,7 @@
       "softwareVersion":"1.1.1",
       "datePublished":"2026-09-04",
       "dateModified":"2026-09-19",
-      "description":"ボードゲーム『カタン』の勝利点を自動計算し、サイコロを振る・実際の出目を記録できるツール。サイコロ2個の出目の確率表（36通り）と初期配置の生成つき。結果は画像で保存できます。",
+      "description":"ボードゲーム『カタン』を遊ぶときに使う、ファンが作った非公式の点数係。勝利点を自動計算し、サイコロを振る・実際の出目を記録できるツール。サイコロ2個の出目の確率表（36通り）と初期配置の生成つき。結果は画像で保存できます。",
       "featureList":["勝利点の自動計算","最大騎士力の自動判定","サイコロを振る","出目の記録と集計","偏りをならす振り方","サイコロの出目の確率表（36通り）","初期配置の生成","結果の画像保存"],
       "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},
       "author":{"@type":"Organization","name":"web忍者の砦"},
@@ -390,12 +391,17 @@ body { background: #fff; }
 div.board-box, #roller { border-radius: 8px; }
 #genBoard, #roll, button.sp, button.toggle, #undo, #hide, #resetScore, #saveImg { box-shadow: none; }
 a.buy { border-radius: 6px; }
+/* 2026-10-19 本家を応援する一文（h1直下・小さく1行） */
+.fan-note{margin:-11px 0 8px;font-size:11px;line-height:1.35;text-align:center;color:#7a6656}
+.wrap{padding-top:10px} /* 一文の高さぶん上の余白を詰め、ツールの位置を元に近づける */
+.fan-note a{color:#b84a00}
 </style>
 </head>
 <body>
 <div class="wrap">
 
 <h1>カタンの点数計算とサイコロ</h1>
+<p class="fan-note">『カタン』を遊ぶときの点数係です。<br>ゲームは公式版でどうぞ→<a href="https://gp-inc.biz/items/catan-standard/" target="_blank" rel="noopener">ジーピー公式ページ</a></p>
 
 <details class="mapbox" id="mapbox">
   <summary>初期配置をつくる</summary>
