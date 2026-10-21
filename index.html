@@ -1076,9 +1076,9 @@ summary:active{background:var(--k-kinari)}
     wood:  {label:'木', fill:'#4f7a4a', text:'#fff'},
     sheep: {label:'羊', fill:'#a9c184', text:'#3b2c22'},
     wheat: {label:'麦', fill:'#e6c568', text:'#3b2c22'},
-    brick: {label:'土', fill:'#c98a5e', text:'#fff'},
-    ore:   {label:'鉄', fill:'#9ba2ab', text:'#fff'},
-    desert:{label:'砂', fill:'#e2d3b3', text:'#7a6656'}
+    brick: {label:'土', fill:'#c98a5e', text:'#3b2c22'},
+    ore:   {label:'鉄', fill:'#9ba2ab', text:'#3b2c22'},
+    desert:{label:'砂', fill:'#e2d3b3', text:'#5e4c3e'}
   };
   var RESOURCES = []
     .concat(fill('wood',4), fill('sheep',4), fill('wheat',4))
@@ -1164,7 +1164,7 @@ summary:active{background:var(--k-kinari)}
     cells.forEach(function(c, i){
       var t = TILE[res[i]];
       s += '<polygon points="'+hexPoints(c.x,c.y)+'" fill="'+t.fill+'" stroke="#fdf6ec" stroke-width="2"/>';
-      s += '<text x="'+c.x+'" y="'+(c.y - R + 22)+'" text-anchor="middle" font-size="13" fill="'+t.text+'" font-family="serif" opacity=".85">'+t.label+'</text>';
+      s += '<text x="'+c.x+'" y="'+(c.y - R + 23)+'" text-anchor="middle" font-size="17" fill="'+t.text+'" font-family="serif">'+t.label+'</text>';
       var v = nums[i];
       if (v){
         var ways = 6 - Math.abs(7 - v);
