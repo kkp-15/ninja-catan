@@ -445,6 +445,10 @@ h1{font-family:var(--k-brush);font-weight:400;font-size:1.3rem;letter-spacing:.0
 .modes button.on{background:var(--k-shu);color:#fff;border-color:var(--k-sumi);box-shadow:none}
 .modes button:focus-visible,.key:focus-visible,.sp:focus-visible,.step:focus-visible{outline:4px double var(--k-shu);outline-offset:2px}
 .even input{accent-color:var(--k-shu)}
+/* 2026-10-21 プレイヤーの削除は右上の小さなボタンに（幅いっぱいの空の箱に見えていた）。閉じる×の左 */
+.sheet-in .pdel{appearance:none;flex:none;min-height:36px;padding:0 10px;margin-left:2px;border:2px solid var(--k-sumi);border-radius:var(--k-r);background:var(--k-kinari);color:var(--k-sumi);font-family:var(--k-bold);font-size:14px;line-height:1;cursor:pointer;box-shadow:var(--k-sh-s)}
+.sheet-in .pdel:active{transform:translate(3px,3px);box-shadow:none}
+.sheet-in .close{min-width:36px;min-height:36px;font-size:1.25rem;color:var(--k-sumi)}
 /* 読みもの: 見出しは墨の筆跡、リンクは墨の太字＋オレンジの下線 */
 .doc{color:var(--k-sumi)}
 .doc h2{display:block;border:0;padding:0;margin:40px 0 14px}
@@ -906,13 +910,13 @@ summary:active{background:var(--k-kinari)}
           '<button class="chip" style="background:'+COLORS[p.color].hex+'" data-color="1" aria-label="色を変える"></button>' +
           '<input class="name" id="nameIn" value="'+esc(p.name)+'" aria-label="プレイヤー名">' +
           '<span class="vp">'+(hideVp ? s.open : s.full)+'<small>点</small></span>' +
+          (players.length > 2 ? '<button class="pdel" data-del="1" aria-label="このプレイヤーを削除">削除</button>' : '') +
           '<button class="close" data-close="1" aria-label="閉じる">×</button>' +
         '</div>' +
         '<div class="rows">'+rows+'</div>' +
         '<div class="badge-row">' +
           '<button class="toggle '+(p.road?'on':'')+'" data-road="1">最長交易路 +2</button>' +
           (army === selected ? '<span class="army-mark">最大騎士力 +2</span>' : '') +
-          (players.length > 2 ? '<button class="toggle" data-del="1" aria-label="このプレイヤーを削除">×</button>' : '') +
         '</div>' +
       '</div>';
     elSheet.classList.add('open');
