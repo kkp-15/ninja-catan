@@ -465,6 +465,9 @@ h1{font-family:var(--k-brush);font-weight:400;font-size:1.3rem;letter-spacing:.0
 summary:active{background:var(--k-kinari)}
 .d4-ninja{position:absolute;right:6px;top:4px;width:14px;opacity:.36;pointer-events:none}
 .wrap{position:relative}
+/* 2026-10-25 点数の −／＋ は見た目29pxのまま、押せる範囲だけ上下左右に広げる（1画面に収める作りは変えない） */
+.step{position:relative;z-index:1}
+.step::after{content:'';position:absolute;inset:-9px -8px}
 </style>
 <!-- kkp-rel-d4:start -->
 <style id="kkp-rel-d4">
