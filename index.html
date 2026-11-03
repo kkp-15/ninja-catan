@@ -250,6 +250,7 @@ h3{font-size:.95rem;font-weight:600;margin:24px 0 6px}
 .r{display:flex;align-items:center;gap:6px;padding:4px 6px;border:1px solid var(--line);border-radius:8px;background:#fff}
 .r .lb{flex:1;font-size:.875rem;color:var(--ink-soft);order:3;line-height:1.3}
 .r .lb b{font-weight:400;color:var(--ink)}
+.r .lb i{font-style:normal;white-space:nowrap}
 .r .num{font-family:"Cormorant Garamond",serif;font-size:1.2rem;min-width:1.1em;text-align:center}
 .step{
   appearance:none;border:1px solid var(--line);background:var(--cream);color:var(--ink);
@@ -894,7 +895,7 @@ summary:active{background:var(--k-kinari)}
     var rows = FIELDS.map(function(f){
       var shown = (f.k === 'vpcard' && hideVp) ? '?' : p[f.k];
       return '<div class="r">' +
-        '<span class="lb"><b>'+f.label+'</b>'+(f.pt ? ' '+f.pt : '')+'</span>' +
+        '<span class="lb"><b>'+f.label+'</b>'+(f.pt ? ' <i>'+f.pt+'</i>' : '')+'</span>' +
         '<button class="step" data-k="'+f.k+'" data-d="-1" aria-label="'+f.label+'を減らす">−</button>' +
         '<span class="num">'+shown+'</span>' +
         '<button class="step" data-k="'+f.k+'" data-d="1" aria-label="'+f.label+'を増やす">＋</button>' +
