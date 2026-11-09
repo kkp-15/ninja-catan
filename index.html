@@ -488,7 +488,7 @@ summary:active{background:var(--k-kinari)}
 .sp.sel .car,.sp .car{color:#9e2e1a}
 /* 設定シートの色・閉じる・削除も押せる範囲を44px以上に（2026-11-09 点検。−＋は10/25に対応済み） */
 .sheet-in .chip,.sheet-in .close{position:relative}
-.sheet-in .chip::after{content:"";position:absolute;inset:-12px}
+.sheet-in .chip::after{content:"";position:absolute;inset:-12px -2px -12px -12px}
 .sheet-in .close::after{content:"";position:absolute;inset:-12px}
 .sheet-in .pdel{min-height:44px}
 </style>
