@@ -207,6 +207,13 @@ h3{font-size:.95rem;font-weight:600;margin:24px 0 6px}
   font-size:1rem;cursor:pointer;padding:0 2px;line-height:1;
 }
 .army-mark{font-size:.875rem;color:var(--orange-deep);align-self:center}
+.win-line{display:flex;align-items:center;justify-content:space-between;gap:8px 12px;flex-wrap:wrap;margin:6px 0 8px;padding:8px 12px;border:2px solid var(--k-shu,#c8452c);border-radius:6px;background:#fff6ef}
+.win-line[hidden]{display:none}
+.win-line p{margin:0;font-weight:800;font-size:1.15rem;line-height:1.4}
+.win-line p small{font-size:15px;font-weight:700;color:var(--ink-soft);margin-left:4px}
+.win-line button{min-height:44px;padding:0 14px}
+.sp.win{border-color:var(--k-shu,#c8452c)!important;background:#ffe9d6!important;box-shadow:0 0 0 3px rgba(255,138,61,.45)!important}
+.sp.win .pt{color:var(--k-shu,#c8452c)}
 .strip-note{font-size:.875rem;color:var(--ink-soft);margin:2px 0 0;text-align:right}
 
 .pad{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
@@ -530,6 +537,8 @@ summary:active{background:var(--k-kinari)}
   <label class="even"><input type="checkbox" id="evenMode">偏りをならす</label>
 </div>
 
+<!-- 2026-11-11 10点に届いたら「〇〇の勝ち」と画像で保存（音・紙吹雪はなし） -->
+<div class="win-line" id="winLine" hidden aria-live="polite"><p id="winText"></p><button class="quiet accent" id="winSave">画像で保存</button></div>
 <div class="strip" id="strip" aria-label="全員の点数"></div>
 <p class="strip-note" id="stripNote">名前を押すと点をつけられます</p>
 <div class="sheet" id="sheet"></div>
@@ -873,11 +882,16 @@ summary:active{background:var(--k-kinari)}
 
     var best = 0;
     players.forEach(function(p,i){ var s = score(i); best = Math.max(best, hideVp ? s.open : s.full); });
+    // 10点に届いた人（画面に出ている点で数える。勝利点カードを伏せている間は伏せた分を数えない）
+    var won = best >= 10 ? players.map(function(p,i){ var s = score(i); return (hideVp ? s.open : s.full) === best ? i : -1; }).filter(function(i){ return i >= 0; }) : [];
+    var wl = document.getElementById('winLine');
+    wl.hidden = !won.length;
+    if (won.length) document.getElementById('winText').innerHTML = won.map(function(i){ return esc(players[i].name); }).join('・') + 'の勝ち<small>（' + best + '点）</small>';
 
     elStrip.innerHTML = players.map(function(p,i){
       var s = score(i), shown = hideVp ? s.open : s.full;
       var marks = (p.road ? '路' : '') + (army === i ? '騎' : '');
-      return '<button class="sp' + (shown === best && best > 0 ? ' top' : '') +
+      return '<button class="sp' + (shown === best && best > 0 ? ' top' : '') + (won.indexOf(i) >= 0 ? ' win' : '') +
              (selected === i ? ' sel' : '') + '" data-go="'+i+'" aria-expanded="'+(selected===i)+'">' +
         '<span class="who"><span class="dot" style="background:'+COLORS[p.color].hex+'"></span>' +
         '<span class="nm">'+esc(p.name)+'</span></span>' +
@@ -1058,6 +1072,7 @@ summary:active{background:var(--k-kinari)}
     return c;
   }
 
+  document.getElementById('winSave').addEventListener('click', function(){ document.getElementById('saveImg').click(); });
   document.getElementById('saveImg').addEventListener('click', function(){
     var note = document.getElementById('saveNote');
     var go = function(){
